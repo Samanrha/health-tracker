@@ -1034,8 +1034,7 @@ async function getDailyPlan(forceNew) {
     }
   }
 
-  var prompt = 'You are a personal trainer designing a gym session plan. Here is my training log for the last 7 days (most recent first):
-' +
+  var prompt = 'You are a personal trainer designing a gym session plan. Here is my training log for the last 7 days (most recent first):\n' +
     last7.join('
 ') + '
 
