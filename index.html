@@ -1034,20 +1034,7 @@ async function getDailyPlan(forceNew) {
     }
   }
 
-  var prompt = 'You are a personal trainer designing a gym session plan. Here is my training log for the last 7 days (most recent first):\n' +
-    last7.join('
-') + '
-
-' +
-    'My goals: 4-5 gym sessions per week, full body conditioning, building strength and tone. I prefer machines over free weights as I am building confidence. I do NOT do Romanian deadlifts.
-
-' +
-    'Design a specific gym session for TODAY. Return ONLY a valid JSON object, no markdown, no explanation:
-' +
-    '{"should_rest": false, "focus": "Legs & Glutes", "warmup": [{"name": "Treadmill", "detail": "10 mins"}], "exercises": [{"name": "Leg Press", "sets": 4, "reps": 8, "weight": "50kg", "tip": "Keep feet shoulder width, press through heels"}], "cooldown": [{"name": "Stair Master", "detail": "10 mins"}], "core": [{"name": "Plank", "sets": 3, "reps": "1 min hold", "weight": "BW"}], "encouragement": "One sentence of motivation here"}
-
-' +
-    'If rest day is needed set should_rest: true and omit exercises. Keep weights realistic based on my logs above. Max 5-6 main exercises.';
+  var prompt = 'You are a personal trainer designing a gym session plan. Here is my training log for the last 7 days (most recent first):\n' + last7.join('\n') + '\n\nMy goals: 4-5 gym sessions per week, full body conditioning, building strength and tone. I prefer machines over free weights as I am building confidence. I do NOT do Romanian deadlifts.\n\nDesign a specific gym session for TODAY. Return ONLY a valid JSON object, no markdown, no explanation: {"should_rest": false, "focus": "Legs and Glutes", "warmup": [{"name": "Treadmill", "detail": "10 mins"}], "exercises": [{"name": "Leg Press", "sets": 4, "reps": 8, "weight": "50kg", "tip": "Keep feet shoulder width"}], "cooldown": [{"name": "Stair Master", "detail": "10 mins"}], "core": [{"name": "Plank", "sets": 3, "reps": "1 min hold", "weight": "BW"}], "encouragement": "One sentence here"}. If rest needed set should_rest true. Max 5-6 exercises.';
 
   try {
     var resp = await fetch('/.netlify/functions/ai-proxy', {
