@@ -744,7 +744,7 @@ function getProgressionSuggestion(exercise) {
   if (sameWeightCount >= 3) {
     // Suggest increase — 2.5kg for most, 5kg for leg press
     var increment = current.weight >= 40 ? 5 : 2.5;
-    return '📈 Try ' + (current.weight + increment) + 'kg — you've done ' + current.weight + 'kg for ' + sameWeightCount + ' sessions';
+    return '📈 Try ' + (current.weight + increment) + 'kg - you have done ' + current.weight + 'kg for ' + sameWeightCount + ' sessions';
   }
   
   // Check if weight went up recently
