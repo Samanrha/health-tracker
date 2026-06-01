@@ -470,11 +470,16 @@ function setSyncStatus(status,label){
 }
 
 // ---- SUPABASE ----
-async function sbFetch(path,method='GET',body=null){
-  const opts={method,headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}};
+async function sbFetch(path,method='GET',body=null,extraHeaders={}){
+  const headers={'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,...extraHeaders};
+  const opts={method,headers};
   if(body) opts.body=JSON.stringify(body);
   const r=await fetch(SB_URL+path,opts);
-  if(!r.ok) throw new Error(await r.text());
+  if(!r.ok){
+    const errText=await r.text();
+    console.error('Supabase error:',r.status,errText);
+    throw new Error(errText);
+  }
   const t=r.status===204?'[]':await r.text();
   try{return JSON.parse(t);}catch{return [];}
 }
@@ -482,14 +487,19 @@ async function sbFetch(path,method='GET',body=null){
 async function loadAllData(){
   setSyncStatus('syncing','loading...');
   try{
-    const rows=await sbFetch('/rest/v1/health_data?select=*');
+    const rows=await sbFetch('/rest/v1/health_data?select=*&order=date.asc');
     allData={};
-    rows.forEach(row=>{allData[row.date]=row.data;});
+    if(Array.isArray(rows)){
+      rows.forEach(row=>{if(row&&row.date&&row.data) allData[row.date]=row.data;});
+    }
+    // Also merge any local backup data that might be newer
+    const local=JSON.parse(localStorage.getItem('healthDataBackup')||'{}');
+    Object.keys(local).forEach(k=>{if(!allData[k]) allData[k]=local[k];});
     setSyncStatus('synced','synced ✓');
     render();
   }catch(e){
-    setSyncStatus('error','offline');
-    // fallback to local
+    console.error('Supabase load error:',e);
+    setSyncStatus('error','offline — using local');
     allData=JSON.parse(localStorage.getItem('healthDataBackup')||'{}');
     render();
   }
@@ -502,7 +512,8 @@ async function saveDay(dateKey){
     // upsert
     await sbFetch('/rest/v1/health_data',
       'POST',
-      {id:dateKey,date:dateKey,data:data}
+      {id:dateKey,date:dateKey,data:data},
+      {'Prefer':'resolution=merge-duplicates,return=minimal'}
     );
     setSyncStatus('synced','synced ✓');
   }catch(e){
