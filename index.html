@@ -195,7 +195,7 @@ label.field-label{display:block;font-size:10px;color:var(--muted);letter-spacing
   </div>
   <div class="date-nav">
     <button onclick="changeDay(-1)">‹</button>
-    <div class="date-center"><div class="date-main" id="dateMain">—</div></div>
+    <div class="date-center"><div class="date-main" id="dateMain">--</div></div>
     <button onclick="changeDay(1)" id="nextBtn">›</button>
   </div>
 </header>
@@ -210,11 +210,11 @@ label.field-label{display:block;font-size:10px;color:var(--muted);letter-spacing
 </div>
 
 <div class="summary-strip">
-  <div class="strip-card"><div class="strip-val" id="stripCal" style="color:var(--orange)">0</div><div class="strip-lbl">Calories</div><div class="strip-sub" id="stripCalSub">—</div></div>
-  <div class="strip-card"><div class="strip-val" id="stripPro" style="color:var(--cyan)">0</div><div class="strip-lbl">Protein</div><div class="strip-sub" id="stripProSub">—</div></div>
-  <div class="strip-card"><div class="strip-val" id="stripWater" style="color:var(--cyan)">0</div><div class="strip-lbl">Water ml</div><div class="strip-sub" id="stripWaterSub">—</div></div>
-  <div class="strip-card"><div class="strip-val" id="stripSteps" style="color:var(--yellow)">0</div><div class="strip-lbl">Steps</div><div class="strip-sub" id="stripStepsSub">—</div></div>
-  <div class="strip-card"><div class="strip-val" id="stripGym" style="color:var(--muted)">—</div><div class="strip-lbl">Gym</div></div>
+  <div class="strip-card"><div class="strip-val" id="stripCal" style="color:var(--orange)">0</div><div class="strip-lbl">Calories</div><div class="strip-sub" id="stripCalSub">--</div></div>
+  <div class="strip-card"><div class="strip-val" id="stripPro" style="color:var(--cyan)">0</div><div class="strip-lbl">Protein</div><div class="strip-sub" id="stripProSub">--</div></div>
+  <div class="strip-card"><div class="strip-val" id="stripWater" style="color:var(--cyan)">0</div><div class="strip-lbl">Water ml</div><div class="strip-sub" id="stripWaterSub">--</div></div>
+  <div class="strip-card"><div class="strip-val" id="stripSteps" style="color:var(--yellow)">0</div><div class="strip-lbl">Steps</div><div class="strip-sub" id="stripStepsSub">--</div></div>
+  <div class="strip-card"><div class="strip-val" id="stripGym" style="color:var(--muted)">--</div><div class="strip-lbl">Gym</div></div>
 </div>
 
 <div class="content">
@@ -255,7 +255,7 @@ label.field-label{display:block;font-size:10px;color:var(--muted);letter-spacing
       <button class="ai-send" onclick="analyseFood()">→</button>
     </div>
     <div class="ai-thinking" id="aiThinking"><div class="dot-pulse"><span></span><span></span><span></span></div><span>Estimating calories & macros...</span></div>
-    <div style="text-align:center;margin:8px 0;font-size:11px;color:var(--dim);">— or enter manually —</div>
+    <div style="text-align:center;margin:8px 0;font-size:11px;color:var(--dim);">-- or enter manually --</div>
     <input type="text" id="mealName" placeholder="Meal name">
     <div class="row2"><input type="number" id="mealCal" placeholder="Calories (kcal)"><input type="number" id="mealPro" placeholder="Protein (g)"></div>
     <div class="row2"><input type="number" id="mealCarbs" placeholder="Carbs (g)"><input type="number" id="mealFat" placeholder="Fat (g)"></div>
@@ -340,7 +340,7 @@ label.field-label{display:block;font-size:10px;color:var(--muted);letter-spacing
           <input type="number" id="calBurned" placeholder="e.g. 350" style="margin-bottom:0;">
           <input type="number" id="sessionMins" placeholder="Mins total" style="margin-bottom:0;">
         </div>
-        <div style="font-size:10px;color:var(--dim);margin-top:6px;">Enter from your fitness watch, or estimate: ~300–500 kcal/hr weights, ~400–600 kcal/hr cardio</div>
+        <div style="font-size:10px;color:var(--dim);margin-top:6px;">Enter from your fitness watch, or estimate: ~300-500 kcal/hr weights, ~400-600 kcal/hr cardio</div>
       </div>
       <button class="btn" onclick="saveGym()">Save Session</button>
     </div>
@@ -395,10 +395,10 @@ label.field-label{display:block;font-size:10px;color:var(--muted);letter-spacing
     <div><div class="streak-label">Day Streak 🔥</div><div class="streak-sub" id="streakSub">Start logging to build your streak</div></div>
   </div>
   <div class="stats-grid">
-    <div class="stat-card"><div class="stat-val" id="avgCal" style="color:var(--orange)">—</div><div class="stat-unit">kcal avg</div><div class="stat-lbl">Daily Calories</div></div>
-    <div class="stat-card"><div class="stat-val" id="avgPro" style="color:var(--cyan)">—</div><div class="stat-unit">g avg</div><div class="stat-lbl">Daily Protein</div></div>
+    <div class="stat-card"><div class="stat-val" id="avgCal" style="color:var(--orange)">--</div><div class="stat-unit">kcal avg</div><div class="stat-lbl">Daily Calories</div></div>
+    <div class="stat-card"><div class="stat-val" id="avgPro" style="color:var(--cyan)">--</div><div class="stat-unit">g avg</div><div class="stat-lbl">Daily Protein</div></div>
     <div class="stat-card"><div class="stat-val" id="gymDays" style="color:var(--green)">0</div><div class="stat-unit">sessions</div><div class="stat-lbl">Gym This Month</div></div>
-    <div class="stat-card"><div class="stat-val" id="avgSteps" style="color:var(--yellow)">—</div><div class="stat-unit">avg steps</div><div class="stat-lbl">Daily Steps</div></div>
+    <div class="stat-card"><div class="stat-val" id="avgSteps" style="color:var(--yellow)">--</div><div class="stat-unit">avg steps</div><div class="stat-lbl">Daily Steps</div></div>
   </div>
   <div style="font-size:10px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;">Recent 14 Days</div>
   <div id="historyList"><div class="empty"><div class="emoji">📅</div><div>No history yet</div></div></div>
@@ -421,7 +421,7 @@ label.field-label{display:block;font-size:10px;color:var(--muted);letter-spacing
     <div class="summary-row"><span>Protein</span><span id="sPro" style="color:var(--cyan)">0g</span></div>
     <div class="summary-row"><span>Water</span><span id="sWater" style="color:var(--cyan)">0ml</span></div>
     <div class="summary-row"><span>Steps</span><span id="sSteps" style="color:var(--yellow)">0</span></div>
-    <div class="summary-row"><span>Gym</span><span id="sGym">—</span></div>
+    <div class="summary-row"><span>Gym</span><span id="sGym">--</span></div>
     <div class="summary-row"><span>Meals logged</span><span id="sMeals">0</span></div>
   </div>
   <div class="panel hide" id="goalsEdit">
@@ -499,7 +499,7 @@ async function loadAllData(){
     render();
   }catch(e){
     console.error('Supabase load error:',e);
-    setSyncStatus('error','offline — using local');
+    setSyncStatus('error','offline -- using local');
     allData=JSON.parse(localStorage.getItem('healthDataBackup')||'{}');
     render();
   }
@@ -562,7 +562,7 @@ async function analyseFood(){
     flash(`✓ ~${parsed.calories} kcal · ${parsed.protein}g protein · ${parsed.carbs}g carbs · ${parsed.fat}g fat`);
     document.getElementById('aiInput').value='';
   }catch(e){
-    flash('Could not estimate — enter manually');
+    flash('Could not estimate -- enter manually');
     document.getElementById('mealName').value=input;
   }
   document.getElementById('aiThinking').classList.remove('show');
@@ -742,7 +742,7 @@ function getProgressionSuggestion(exercise) {
   var sameWeightCount = history.filter(function(h) { return h.weight === current.weight; }).length;
   
   if (sameWeightCount >= 3) {
-    // Suggest increase — 2.5kg for most, 5kg for leg press
+    // Suggest increase -- 2.5kg for most, 5kg for leg press
     var increment = current.weight >= 40 ? 5 : 2.5;
     return '📈 Try ' + (current.weight + increment) + 'kg - you have done ' + current.weight + 'kg for ' + sameWeightCount + ' sessions';
   }
@@ -750,7 +750,7 @@ function getProgressionSuggestion(exercise) {
   // Check if weight went up recently
   var prevWeight = history.length > 1 ? history[1].weight : null;
   if (prevWeight && current.weight > prevWeight) {
-    return '🔥 New weight! Up from ' + prevWeight + 'kg — great progress';
+    return '🔥 New weight! Up from ' + prevWeight + 'kg -- great progress';
   }
   
   return null;
@@ -830,7 +830,7 @@ async function getGymAdvice(){
     const gym=allData[k]&&allData[k].gym;
     if(gym&&gym.attended){
       const exNames=(gym.exercises||[]).map(e=>e.name).join(', ');
-      last7.push(`${k}: ${gym.notes||'session'} — Exercises: ${exNames||'not listed'}. Burned: ${gym.calBurned||'unknown'} kcal. Duration: ${gym.sessionMins||'unknown'} mins.`);
+      last7.push(`${k}: ${gym.notes||'session'} -- Exercises: ${exNames||'not listed'}. Burned: ${gym.calBurned||'unknown'} kcal. Duration: ${gym.sessionMins||'unknown'} mins.`);
     }else{
       last7.push(`${k}: Rest day`);
     }
@@ -858,7 +858,7 @@ Keep it concise and practical. Use plain text, no markdown symbols.`;
     document.getElementById('gymAdvice').textContent=text;
     document.getElementById('gymAdvice').style.display='block';
   }catch(e){
-    document.getElementById('gymAdvice').textContent='Could not load advice — check your connection.';
+    document.getElementById('gymAdvice').textContent='Could not load advice -- check your connection.';
     document.getElementById('gymAdvice').style.display='block';
   }
   document.getElementById('adviceThinking').style.display='none';
@@ -909,7 +909,7 @@ function getExerciseLink(name) {
   for (var key in EXERCISE_LINKS) {
     if (lower.includes(key) || key.includes(lower)) return EXERCISE_LINKS[key];
   }
-  // Fallback — YouTube search for whatever they typed
+  // Fallback -- YouTube search for whatever they typed
   return 'https://www.youtube.com/results?search_query=' + encodeURIComponent(name + ' exercise proper form tutorial');
 }
 
@@ -1070,7 +1070,7 @@ async function getDailyPlan(forceNew) {
 
     renderPlanHTML(plan, today);
   } catch(e) {
-    document.getElementById('gymPlan').textContent = 'Could not load plan — check your connection.';
+    document.getElementById('gymPlan').textContent = 'Could not load plan -- check your connection.';
     document.getElementById('gymPlan').style.display = 'block';
   }
   document.getElementById('planThinking').style.display = 'none';
@@ -1218,7 +1218,7 @@ function renderStreak(){
   for(let i=0;i<keys.length;i++){const exp=new Date(today+'T12:00:00');exp.setDate(exp.getDate()-i);if(keys[i]===exp.toISOString().split('T')[0])streak++;else break;}
   document.getElementById('streakTopNum').textContent=streak;
   if(document.getElementById('streakNum')) document.getElementById('streakNum').textContent=streak;
-  if(document.getElementById('streakSub')) document.getElementById('streakSub').textContent=streak>1?`${streak} days in a row!`:streak===1?'Good start — keep going!':'Log today to start your streak';
+  if(document.getElementById('streakSub')) document.getElementById('streakSub').textContent=streak>1?`${streak} days in a row!`:streak===1?'Good start -- keep going!':'Log today to start your streak';
 }
 
 function renderHistory(){
@@ -1229,10 +1229,10 @@ function renderHistory(){
   const stepsArr=allKeys.map(k=>(allData[k].steps||0)).filter(v=>v>0);
   const thisMonth=new Date().toISOString().slice(0,7);
   const gymCount=allKeys.filter(k=>k.startsWith(thisMonth)&&allData[k].gym&&allData[k].gym.attended).length;
-  document.getElementById('avgCal').textContent=calArr.length?Math.round(calArr.reduce((a,b)=>a+b,0)/calArr.length):'—';
-  document.getElementById('avgPro').textContent=proArr.length?Math.round(proArr.reduce((a,b)=>a+b,0)/proArr.length)+'g':'—';
+  document.getElementById('avgCal').textContent=calArr.length?Math.round(calArr.reduce((a,b)=>a+b,0)/calArr.length):'--';
+  document.getElementById('avgPro').textContent=proArr.length?Math.round(proArr.reduce((a,b)=>a+b,0)/proArr.length)+'g':'--';
   document.getElementById('gymDays').textContent=gymCount;
-  document.getElementById('avgSteps').textContent=stepsArr.length?Math.round(stepsArr.reduce((a,b)=>a+b,0)/stepsArr.length).toLocaleString():'—';
+  document.getElementById('avgSteps').textContent=stepsArr.length?Math.round(stepsArr.reduce((a,b)=>a+b,0)/stepsArr.length).toLocaleString():'--';
   const histList=document.getElementById('historyList'); histList.innerHTML='';
   allKeys.slice(0,14).forEach(k=>{
     const t=foodTotals(k); const d=allData[k]||{}; const dt=keyToDate(k); const isToday=k===todayKey();
