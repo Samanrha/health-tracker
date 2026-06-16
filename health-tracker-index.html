@@ -207,7 +207,7 @@ label.field-label{display:block;font-size:10px;color:var(--muted);letter-spacing
   <button class="nav-tab" onclick="switchTab('steps')">👟 Steps</button>
   <button class="nav-tab" onclick="switchTab('history')">📈 History</button>
   <button class="nav-tab" onclick="switchTab('goals')">🎯 Goals</button>
-  <button class="nav-tab" onclick="switchTab('progress')">📊 Progress</button>
+  <button class="nav-tab" onclick="switchTab('gymoverview')">📊 Progress</button>
 </div>
 
 <div class="summary-strip">
@@ -405,6 +405,33 @@ label.field-label{display:block;font-size:10px;color:var(--muted);letter-spacing
   <div id="historyList"><div class="empty"><div class="emoji">📅</div><div>No history yet</div></div></div>
 </div>
 
+<!-- GYM OVERVIEW TAB -->
+<div id="tab-gymoverview" class="hide">
+  <div class="panel" style="margin-bottom:10px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+      <div class="panel-title" style="margin:0;">Gym Progress</div>
+      <div style="display:flex;gap:6px;">
+        <button onclick="setOverviewRange(7)" id="range7btn" style="background:var(--orange);color:#0c0c10;border:none;border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer;font-family:DM Sans,sans-serif;">7d</button>
+        <button onclick="setOverviewRange(30)" id="range30btn" style="background:var(--surface2);color:var(--muted);border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer;font-family:DM Sans,sans-serif;">30d</button>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px;">
+      <div style="background:var(--surface2);border-radius:10px;padding:10px;text-align:center;border:1px solid var(--border);"><div id="ov-sessions" style="font-size:22px;font-weight:700;color:var(--orange);">0</div><div style="font-size:10px;color:var(--muted);">SESSIONS</div></div>
+      <div style="background:var(--surface2);border-radius:10px;padding:10px;text-align:center;border:1px solid var(--border);"><div id="ov-cals" style="font-size:22px;font-weight:700;color:var(--cyan);">--</div><div style="font-size:10px;color:var(--muted);">KCAL BURNED</div></div>
+      <div style="background:var(--surface2);border-radius:10px;padding:10px;text-align:center;border:1px solid var(--border);"><div id="ov-volume" style="font-size:22px;font-weight:700;color:var(--green);">--</div><div style="font-size:10px;color:var(--muted);">VOLUME</div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+      <div style="background:var(--surface2);border-radius:10px;padding:10px;text-align:center;border:1px solid var(--border);"><div id="ov-streak" style="font-size:22px;font-weight:700;color:var(--orange);">0</div><div style="font-size:10px;color:var(--muted);">STREAK</div></div>
+      <div style="background:var(--surface2);border-radius:10px;padding:10px;text-align:center;border:1px solid var(--border);"><div id="ov-consistency" style="font-size:22px;font-weight:700;color:var(--cyan);">0%</div><div style="font-size:10px;color:var(--muted);">CONSISTENCY</div></div>
+    </div>
+  </div>
+  <div class="panel" style="margin-bottom:10px;"><div class="panel-title">Session Frequency</div><div id="ov-frequency-chart" style="display:flex;align-items:flex-end;gap:3px;height:60px;margin-top:8px;"></div></div>
+  <div class="panel" style="margin-bottom:10px;"><div class="panel-title">Calories Burned Per Session</div><div id="ov-cals-chart" style="display:flex;align-items:flex-end;gap:3px;height:70px;margin-top:8px;"></div></div>
+  <div class="panel" style="margin-bottom:10px;"><div class="panel-title">Personal Bests</div><div id="ov-pbs" style="font-size:13px;color:var(--muted);">Log gym sessions to see your personal bests</div></div>
+  <div class="panel" style="margin-bottom:10px;"><div class="panel-title">Weight Progression</div><div id="ov-progression" style="font-size:13px;color:var(--muted);">Log gym sessions to track progression</div></div>
+  <div class="panel" style="margin-bottom:10px;"><div class="panel-title">Recent Sessions</div><div id="ov-recent" style="font-size:13px;color:var(--muted);">No sessions logged yet</div></div>
+</div>
+
 <!-- GOALS TAB -->
 <div id="tab-goals" class="hide">
   <div class="panel" id="goalsView">
@@ -437,22 +464,6 @@ label.field-label{display:block;font-size:10px;color:var(--muted);letter-spacing
   </div>
 </div>
 
-
-<!-- PROGRESS TAB -->
-<div id="tab-progress" class="hide">
-  <div class="panel">
-    <div class="panel-title">🏆 Personal Bests</div>
-    <div id="pbList"><div class="empty"><div class="emoji">🏋️</div><div>No gym sessions logged yet</div></div></div>
-  </div>
-  <div class="panel">
-    <div class="panel-title">📅 Sessions Per Week</div>
-    <div id="weeklyChart"></div>
-  </div>
-  <div class="panel">
-    <div class="panel-title">📈 Volume Over Time</div>
-    <div id="volumeChart"></div>
-  </div>
-</div>
 </div>
 
 <script>
@@ -761,13 +772,13 @@ function getProgressionSuggestion(exercise) {
   if (sameWeightCount >= 3) {
     // Suggest increase — 2.5kg for most, 5kg for leg press
     var increment = current.weight >= 40 ? 5 : 2.5;
-    return '📈 Try ' + (current.weight + increment) + 'kg - you have done ' + current.weight + 'kg for ' + sameWeightCount + ' sessions';
+    return '📈 Try ' + (current.weight + increment) + 'kg — you've done ' + current.weight + 'kg for ' + sameWeightCount + ' sessions';
   }
   
   // Check if weight went up recently
   var prevWeight = history.length > 1 ? history[1].weight : null;
   if (prevWeight && current.weight > prevWeight) {
-    return '🔥 New weight! Up from ' + prevWeight + 'kg - great progress';
+    return '🔥 New weight! Up from ' + prevWeight + 'kg — great progress';
   }
   
   return null;
@@ -1051,7 +1062,21 @@ async function getDailyPlan(forceNew) {
     }
   }
 
-    var prompt = 'You are a personal trainer designing a gym session plan. Here is my training log for the last 7 days (most recent first):\n' + last7.join('\n') + '\n\nMy goals: 4-5 gym sessions per week, full body conditioning, building strength and tone. I prefer machines over free weights as I am building confidence. I do NOT do Romanian deadlifts.\n\nDesign a specific gym session for TODAY. Return ONLY a valid JSON object, no markdown, no explanation:\n{"should_rest": false, "focus": "Legs & Glutes", "warmup": [{"name": "Treadmill", "detail": "10 mins"}], "exercises": [{"name": "Leg Press", "sets": 4, "reps": 8, "weight": "50kg", "tip": "Keep feet shoulder width, press through heels"}], "cooldown": [{"name": "Stair Master", "detail": "10 mins"}], "core": [{"name": "Plank", "sets": 3, "reps": "1 min hold", "weight": "BW"}], "encouragement": "One sentence of motivation here"}\n\nIf rest day is needed set should_rest: true and omit exercises. Keep weights realistic based on my logs above. Max 5-6 main exercises.';
+  var prompt = 'You are a personal trainer designing a gym session plan. Here is my training log for the last 7 days (most recent first):
+' +
+    last7.join('
+') + '
+
+' +
+    'My goals: 4-5 gym sessions per week, full body conditioning, building strength and tone. I prefer machines over free weights as I am building confidence. I do NOT do Romanian deadlifts.
+
+' +
+    'Design a specific gym session for TODAY. Return ONLY a valid JSON object, no markdown, no explanation:
+' +
+    '{"should_rest": false, "focus": "Legs & Glutes", "warmup": [{"name": "Treadmill", "detail": "10 mins"}], "exercises": [{"name": "Leg Press", "sets": 4, "reps": 8, "weight": "50kg", "tip": "Keep feet shoulder width, press through heels"}], "cooldown": [{"name": "Stair Master", "detail": "10 mins"}], "core": [{"name": "Plank", "sets": 3, "reps": "1 min hold", "weight": "BW"}], "encouragement": "One sentence of motivation here"}
+
+' +
+    'If rest day is needed set should_rest: true and omit exercises. Keep weights realistic based on my logs above. Max 5-6 main exercises.';
 
   try {
     var resp = await fetch('/.netlify/functions/ai-proxy', {
@@ -1112,7 +1137,6 @@ function render(){
   renderGoalsTab();
   renderStrip();
   renderStreak();
-  renderProgress();
 }
 
 function renderFood(){
@@ -1298,15 +1322,140 @@ function saveGoals(){
   hideGoalEdit(); render(); flash('Goals saved!');
 }
 
+var gymOverviewRange = 7;
+function setOverviewRange(days) {
+  gymOverviewRange = days;
+  document.getElementById('range7btn').style.background = days===7 ? 'var(--orange)' : 'var(--surface2)';
+  document.getElementById('range7btn').style.color = days===7 ? '#0c0c10' : 'var(--muted)';
+  document.getElementById('range30btn').style.background = days===30 ? 'var(--orange)' : 'var(--surface2)';
+  document.getElementById('range30btn').style.color = days===30 ? '#0c0c10' : 'var(--muted)';
+  renderGymOverview();
+}
+function renderGymOverview() {
+  var today = todayKey();
+  var days = [];
+  for (var i = gymOverviewRange-1; i>=0; i--) {
+    var d = new Date(today+'T12:00:00'); d.setDate(d.getDate()-i);
+    days.push(d.toISOString().split('T')[0]);
+  }
+  var attended = days.filter(function(k){return allData[k]&&allData[k].gym&&allData[k].gym.attended;});
+  var totalCals = attended.reduce(function(a,k){return a+((allData[k].gym.calBurned)||0);},0);
+  var totalVol = 0;
+  attended.forEach(function(k){
+    (allData[k].gym.exercises||[]).forEach(function(e){
+      totalVol += (parseInt(e.sets)||0)*(parseInt(e.reps)||0)*(parseFloat(e.weight)||0);
+    });
+  });
+  var consistency = gymOverviewRange>0 ? Math.round((attended.length/gymOverviewRange)*100) : 0;
+  var streak=0; var cd=new Date(today+'T12:00:00');
+  for(var i=0;i<60;i++){
+    var k=cd.toISOString().split('T')[0];
+    if(allData[k]&&allData[k].gym&&allData[k].gym.attended){streak++;}
+    else if(i>0){break;}
+    cd.setDate(cd.getDate()-1);
+  }
+  document.getElementById('ov-sessions').textContent=attended.length;
+  document.getElementById('ov-cals').textContent=totalCals>0?totalCals:'--';
+  document.getElementById('ov-volume').textContent=totalVol>=1000?(totalVol/1000).toFixed(1)+'t':totalVol>0?totalVol+'kg':'--';
+  document.getElementById('ov-streak').textContent=streak+' days';
+  document.getElementById('ov-consistency').textContent=consistency+'%';
+  var freqEl=document.getElementById('ov-frequency-chart'); freqEl.innerHTML='';
+  days.forEach(function(k){
+    var att=allData[k]&&allData[k].gym&&allData[k].gym.attended;
+    var bar=document.createElement('div');
+    bar.style.cssText='flex:1;border-radius:3px 3px 0 0;min-width:4px;background:'+(att?'var(--orange)':'var(--surface2)')+';height:'+(att?'100%':'15%')+';border:1px solid var(--border);';
+    freqEl.appendChild(bar);
+  });
+  var calsEl=document.getElementById('ov-cals-chart'); calsEl.innerHTML='';
+  var maxCal=attended.reduce(function(a,k){return Math.max(a,allData[k].gym.calBurned||0);},1);
+  days.forEach(function(k){
+    var cal=allData[k]&&allData[k].gym&&allData[k].gym.attended?(allData[k].gym.calBurned||0):0;
+    var pct=cal>0?Math.max((cal/maxCal)*100,10):8;
+    var bar=document.createElement('div');
+    bar.style.cssText='flex:1;border-radius:3px 3px 0 0;min-width:4px;background:'+(cal>0?'var(--cyan)':'var(--surface2)')+';height:'+pct+'%;border:1px solid var(--border);';
+    if(cal>0) bar.title=cal+' kcal';
+    calsEl.appendChild(bar);
+  });
+  var pbMap={};
+  Object.keys(allData).forEach(function(k){
+    var gym=allData[k]&&allData[k].gym;
+    if(!gym||!gym.attended) return;
+    (gym.exercises||[]).forEach(function(e){
+      var w=parseFloat(e.weight)||0; if(!w) return;
+      var name=e.name.toLowerCase().trim();
+      if(!pbMap[name]||w>pbMap[name].weight) pbMap[name]={weight:w,name:e.name};
+    });
+  });
+  var pbEl=document.getElementById('ov-pbs');
+  var pbKeys=Object.keys(pbMap).sort();
+  if(!pbKeys.length){pbEl.textContent='Log weighted exercises to see your personal bests';}
+  else{
+    pbEl.innerHTML='';
+    pbKeys.forEach(function(key){
+      var pb=pbMap[key];
+      var row=document.createElement('div');
+      row.style.cssText='display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);';
+      row.innerHTML='<span style="font-size:13px;">'+pb.name+'</span><span style="font-weight:700;color:var(--orange);font-size:13px;">PB: '+pb.weight+'kg</span>';
+      pbEl.appendChild(row);
+    });
+  }
+  var progMap={};
+  Object.keys(allData).sort().forEach(function(k){
+    var gym=allData[k]&&allData[k].gym;
+    if(!gym||!gym.attended) return;
+    (gym.exercises||[]).forEach(function(e){
+      var w=parseFloat(e.weight)||0; if(!w) return;
+      var name=e.name.toLowerCase().trim();
+      if(!progMap[name]) progMap[name]=[];
+      var last=progMap[name][progMap[name].length-1];
+      if(!last||last.w!==w) progMap[name].push({date:k,w:w,name:e.name});
+    });
+  });
+  var progEl=document.getElementById('ov-progression');
+  var progKeys=Object.keys(progMap).filter(function(k){return progMap[k].length>1;});
+  if(!progKeys.length){progEl.textContent='Keep logging to track weight increases';}
+  else{
+    progEl.innerHTML='';
+    progKeys.forEach(function(key){
+      var entries=progMap[key];
+      var diff=entries[entries.length-1].w-entries[0].w;
+      var arrow=diff>0?'<span style="color:#2ecc71">+'+diff+'kg</span>':diff<0?'<span style="color:#e74c3c">'+diff+'kg</span>':'<span style="color:var(--muted)">stable</span>';
+      var history=entries.map(function(e){return e.w+'kg';}).join(' > ');
+      var row=document.createElement('div');
+      row.style.cssText='padding:8px 0;border-bottom:1px solid var(--border);';
+      row.innerHTML='<div style="display:flex;justify-content:space-between;"><span style="font-size:13px;font-weight:600;">'+entries[0].name+'</span>'+arrow+'</div><div style="font-size:11px;color:var(--muted);margin-top:2px;">'+history+'</div>';
+      progEl.appendChild(row);
+    });
+  }
+  var recentEl=document.getElementById('ov-recent');
+  var recent=attended.slice(-5).reverse();
+  if(!recent.length){recentEl.textContent='No sessions in this period';}
+  else{
+    recentEl.innerHTML='';
+    recent.forEach(function(k){
+      var gym=allData[k].gym;
+      var d=new Date(k+'T12:00:00');
+      var label=d.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'});
+      var exNames=(gym.exercises||[]).map(function(e){return e.name;}).join(', ')||'Session logged';
+      var vol=calcSessionVolume(gym.exercises);
+      var row=document.createElement('div');
+      row.style.cssText='padding:8px 0;border-bottom:1px solid var(--border);';
+      row.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;"><div style="font-size:13px;font-weight:600;">'+label+'</div><div style="font-size:11px;color:var(--cyan);">'+(gym.calBurned?gym.calBurned+' kcal':'')+(vol.volume>0?(gym.calBurned?' - ':'')+vol.volume+'kg':'')+'</div></div><div style="font-size:11px;color:var(--muted);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">'+exNames+'</div>';
+      recentEl.appendChild(row);
+    });
+  }
+}
+
+
 function switchTab(tab){
-  ['food','water','gym','steps','history','goals','progress'].forEach(t=>{
+  ['food','water','gym','steps','history','goals','gymoverview'].forEach(t=>{
     document.getElementById('tab-'+t).classList.toggle('hide',t!==tab);
   });
   document.querySelectorAll('.nav-tab').forEach((el,i)=>{
-    el.classList.toggle('active',['food','water','gym','steps','history','goals','progress'][i]===tab);
+    el.classList.toggle('active',['food','water','gym','steps','history','goals','gymoverview'][i]===tab);
   });
   if(tab==='gym'){renderGymTab(); loadSavedPlan();}
-  if(tab==='progress'){renderProgress();}
+  if(tab==='gymoverview'){renderGymOverview();}
 }
 
 function flash(msg){
@@ -1314,108 +1463,6 @@ function flash(msg){
   el.textContent=msg; el.classList.remove('show');
   void el.offsetWidth; el.classList.add('show');
   setTimeout(()=>el.classList.remove('show'),2000);
-}
-
-
-// ---- PROGRESS ----
-function renderProgress(){
-  // Personal bests
-  var pbs = {};
-  Object.keys(allData).sort().forEach(function(k){
-    var gym = allData[k] && allData[k].gym;
-    if(!gym || !gym.attended) return;
-    (gym.exercises||[]).forEach(function(e){
-      var w = parseFloat(e.weight)||0;
-      if(!w) return;
-      var name = e.name.trim();
-      if(!pbs[name] || w > pbs[name].weight){
-        pbs[name] = {weight: w, date: k, sets: e.sets, reps: e.reps};
-      }
-    });
-  });
-
-  var pbEl = document.getElementById('pbList');
-  var pbKeys = Object.keys(pbs).sort();
-  if(!pbKeys.length){
-    pbEl.innerHTML = '<div class="empty"><div class="emoji">🏋️</div><div>No weighted exercises logged yet</div></div>';
-  } else {
-    pbEl.innerHTML = pbKeys.map(function(name){
-      var pb = pbs[name];
-      var d = new Date(pb.date+'T12:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'short'});
-      var detail = [pb.sets?pb.sets+'sets':'', pb.reps?pb.reps+'reps':''].filter(Boolean).join(' x ');
-      return '<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);">' +
-        '<div><div style="font-size:13px;font-weight:500;">'+name+'</div>' +
-        '<div style="font-size:11px;color:var(--muted);">'+detail+' · '+d+'</div></div>' +
-        '<div style="font-size:18px;font-weight:700;color:var(--orange);">'+pb.weight+'kg</div>' +
-      '</div>';
-    }).join('');
-  }
-
-  // Sessions per week (last 8 weeks)
-  var weekMap = {};
-  Object.keys(allData).forEach(function(k){
-    var gym = allData[k] && allData[k].gym;
-    if(!gym || !gym.attended) return;
-    var d = new Date(k+'T12:00:00');
-    var day = d.getDay();
-    var diff = d.getDate() - day + (day===0?-6:1);
-    var monday = new Date(d);
-    monday.setDate(diff);
-    var wk = monday.toISOString().split('T')[0];
-    weekMap[wk] = (weekMap[wk]||0)+1;
-  });
-  var weeks = Object.keys(weekMap).sort().slice(-8);
-  var weekEl = document.getElementById('weeklyChart');
-  if(!weeks.length){
-    weekEl.innerHTML = '<div style="color:var(--dim);font-size:13px;text-align:center;padding:20px;">No gym sessions yet</div>';
-  } else {
-    var maxSessions = Math.max.apply(null, weeks.map(function(w){return weekMap[w];}));
-    weekEl.innerHTML = '<div style="display:flex;align-items:flex-end;gap:8px;height:80px;margin-bottom:8px;">' +
-      weeks.map(function(w){
-        var count = weekMap[w]||0;
-        var pct = maxSessions ? (count/maxSessions)*100 : 0;
-        var d = new Date(w+'T12:00:00');
-        var lbl = d.toLocaleDateString('en-GB',{day:'numeric',month:'short'});
-        var color = count>=4?'var(--green)':count>=2?'var(--orange)':'var(--dim)';
-        return '<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">' +
-          '<div style="font-size:11px;font-weight:700;color:'+color+';">'+count+'</div>' +
-          '<div style="width:100%;background:'+color+';border-radius:4px 4px 0 0;height:'+pct+'%;min-height:4px;"></div>' +
-          '<div style="font-size:9px;color:var(--muted);white-space:nowrap;">'+lbl+'</div>' +
-        '</div>';
-      }).join('') +
-    '</div>';
-  }
-
-  // Volume over time (last 10 sessions)
-  var sessions = [];
-  Object.keys(allData).sort().forEach(function(k){
-    var gym = allData[k] && allData[k].gym;
-    if(!gym || !gym.attended) return;
-    var vol = 0;
-    (gym.exercises||[]).forEach(function(e){
-      vol += (parseInt(e.sets)||0)*(parseInt(e.reps)||0)*(parseFloat(e.weight)||0);
-    });
-    if(vol>0) sessions.push({date:k, vol:vol});
-  });
-  sessions = sessions.slice(-10);
-  var volEl = document.getElementById('volumeChart');
-  if(!sessions.length){
-    volEl.innerHTML = '<div style="color:var(--dim);font-size:13px;text-align:center;padding:20px;">No volume data yet</div>';
-  } else {
-    var maxVol = Math.max.apply(null, sessions.map(function(s){return s.vol;}));
-    volEl.innerHTML = '<div style="display:flex;align-items:flex-end;gap:6px;height:80px;margin-bottom:8px;">' +
-      sessions.map(function(s){
-        var pct = maxVol ? (s.vol/maxVol)*100 : 0;
-        var d = new Date(s.date+'T12:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'short'});
-        var vLabel = s.vol>=1000?(s.vol/1000).toFixed(1)+'t':s.vol+'kg';
-        return '<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">' +
-          '<div style="font-size:10px;font-weight:700;color:var(--cyan);">'+vLabel+'</div>' +
-          '<div style="width:100%;background:var(--cyan);border-radius:4px 4px 0 0;height:'+pct+'%;min-height:4px;opacity:0.8;"></div>' +
-          '<div style="font-size:9px;color:var(--muted);white-space:nowrap;">'+d+'</div>' +
-        '</div>';
-      }).join('') +
-    '</div>';
-  }
 }
 
 // ---- INIT ----
